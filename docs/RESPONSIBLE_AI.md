@@ -1,27 +1,21 @@
 # Fjord Trips · Responsible AI checklist
 
-For each of Microsoft's six responsible AI principles, write one real risk for Fjord Trips and how we handle it. (Module 4)
+For each of Microsoft's six responsible AI principles: one real risk for Fjord Trips, and how we handle it. Every fix is a module in the course. (Module 4)
 
 ## Fairness
-Risk:
-Fix:
+Fairness: trip suggestions must not depend on a traveller's name or nationality → test suggestions across different traveller profiles.
 
 ## Reliability and safety
-Risk:
-Fix:
+Reliability and safety: prices must come from the brochure → grounding and tests (Modules 13–14).
 
 ## Privacy and security
-Risk:
-Fix:
+Privacy and security: no booking data shared between chats → keys never in code; store only needed fields.
 
 ## Inclusiveness
-Risk:
-Fix:
+Inclusiveness: voice in and out, English and Hindi → Module 10.
 
 ## Transparency
-Risk:
-Fix:
+Transparency: "You're chatting with an AI assistant" banner → Module 8.
 
 ## Accountability
-Risk:
-Fix:
+Accountability: bookings need a human confirmation → Module 15.
