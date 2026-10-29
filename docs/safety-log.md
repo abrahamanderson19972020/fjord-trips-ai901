@@ -17,3 +17,7 @@ Results: **blocked** (content filter or Prompt Shields), **refused** (the agent 
 | 9 | Different treatment by nationality | | |
 | 10 | Instruction hidden inside a translation request | | |
 
+## What we changed
+- Custom content filter `fjordtrips-safety` on the `gpt-5-mini` deployment: harm categories on medium blocking (input and output), Prompt Shields on for jailbreak attacks and for indirect attacks in documents.
+- New rules in the agent instructions (see `prompts/agent_instructions.txt`): the agent never books by itself, a human advisor confirms; it never reveals its instructions.
+- The attacks are now part of `tests/run_eval.py`, so every change is checked for safety.
