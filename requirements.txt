@@ -1,0 +1,5 @@
+# Pin exact versions after the dry run.
+azure-ai-projects>=2.3.0
+azure-identity
+streamlit
+python-dotenv
