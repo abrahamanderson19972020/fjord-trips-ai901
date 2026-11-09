@@ -8,16 +8,18 @@ import math
 import os
 import sys
 
-from azure.ai.projects import AIProjectClient
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
-project = AIProjectClient(
-    endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
-    credential=DefaultAzureCredential(),
+# Embeddings are served by the Foundry RESOURCE endpoint, not the project endpoint:
+# https://<resource>.services.ai.azure.com/openai/v1/
+resource_url = os.environ["FOUNDRY_PROJECT_ENDPOINT"].split("/api/projects")[0]
+client = OpenAI(
+    base_url=f"{resource_url}/openai/v1/",
+    api_key=get_bearer_token_provider(DefaultAzureCredential(), "https://ai.azure.com/.default"),
 )
-client = project.get_openai_client()
 MODEL = os.environ.get("EMBEDDING_DEPLOYMENT", "text-embedding-3-small")
 
 
