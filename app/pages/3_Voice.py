@@ -3,12 +3,14 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
+import ui
 from agent_client import new_conversation, ask_agent
 from speech import listen, speak
 
 st.set_page_config(page_title="Fjord Trips · Voice", page_icon="🎙️")
-st.title("Ask with your voice")
-st.info("You're talking to an AI assistant. A travel advisor confirms all bookings.")
+ui.style()
+ui.hero("Voice", "Ask with your voice", "Record a question, and hear the trip agent answer out loud.", photo="flam.jpg")
+ui.notice("You're talking to an AI assistant. A travel advisor confirms all bookings.")
 
 LANGUAGES = {"English": "en-US", "Norsk (Norwegian)": "nb-NO"}
 language = LANGUAGES[st.radio("Language", list(LANGUAGES), horizontal=True)]
@@ -20,13 +22,14 @@ if recording:
     question_file.write_bytes(recording.getvalue())
     with st.spinner("Listening..."):
         question = listen(language, wav_file=str(question_file))
-    st.write(f"**You said:** {question or '(nothing recognised, please try again)'}")
+    st.chat_message("user", avatar="🧑").write(f"**You said:** {question or '(nothing recognised, please try again)'}")
     if question:
         if "conv" not in st.session_state:
             st.session_state.conv = new_conversation()
         prompt = question if language == "en-US" else question + "\n(Answer in Norwegian.)"
         with st.spinner("Thinking..."):
             answer = ask_agent(st.session_state.conv, prompt)
-        st.write(f"**Assistant:** {answer}")
+        st.chat_message("assistant", avatar="⛰️").write(f"**Assistant:** {answer}")
         speak(answer, language, out_file=str(answer_file))
         st.audio(answer_file.read_bytes(), format="audio/wav", autoplay=True)
+ui.sidebar_note()

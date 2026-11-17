@@ -2,11 +2,12 @@
 
 import pandas as pd
 import streamlit as st
+import ui
 from extract import extract, extract_bytes, REPO
 
 st.set_page_config(page_title="Fjord Trips · Staff documents", page_icon="📄")
-st.title("Staff · Documents")
-st.caption("Content Understanding reads the document and fills in the fields. Values under 80% confidence are flagged for a human to check.")
+ui.style()
+ui.hero("Staff page", "Staff · Documents", "Content Understanding reads the document and fills in the fields. Values under 80% confidence are flagged for a human to check.")
 
 SAMPLES = [f"bookings/booking-{n}.pdf" for n in range(1042, 1047)] + \
           [f"receipts/receipt-{n:02d}.jpg" for n in range(1, 6)]
@@ -34,3 +35,4 @@ if fields:
              "check": "⚠️ check" if conf is not None and conf < 0.8 else ""}
             for name, (value, conf) in fields.items()]
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+ui.sidebar_note()
