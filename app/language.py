@@ -18,7 +18,7 @@ def load_reviews(path="data/reviews.csv"):
     with open(path, encoding="utf-8") as f:
         return [row["text"] for row in csv.DictReader(f)]
 
-def in_batches(items, size=10):
+def in_batches(items, size=5):
     for i in range(0, len(items), size):
         yield items[i:i + size]
 

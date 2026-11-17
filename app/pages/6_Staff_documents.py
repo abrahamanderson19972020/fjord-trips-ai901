@@ -1,4 +1,5 @@
 """Module 12 · Staff documents: read bookings and receipts automatically."""
+
 import pandas as pd
 import streamlit as st
 from extract import extract, extract_bytes, REPO
@@ -12,16 +13,17 @@ SAMPLES = [f"bookings/booking-{n}.pdf" for n in range(1042, 1047)] + \
 
 source = st.radio("Document", ["Pick a sample", "Upload a file"], horizontal=True)
 fields = None
+
 if source == "Pick a sample":
     file = st.selectbox("Sample file", SAMPLES)
-    analyzer = "prebuilt-receipt" if file.startswith("receipts") else "fjord-booking"
+    analyzer = "prebuilt-receipt" if file.startswith("receipts") else "fjordbooking"
     if st.button("Extract fields", type="primary"):
         with st.spinner(f"Analysing with {analyzer}..."):
             fields = extract(f"{REPO}/{file}", analyzer)
 else:
     upload = st.file_uploader("Booking PDF or receipt photo", type=["pdf", "jpg", "jpeg", "png"])
     if upload:
-        analyzer = "fjord-booking" if upload.type == "application/pdf" else "prebuilt-receipt"
+        analyzer = "fjordbooking" if upload.type == "application/pdf" else "prebuilt-receipt"
         with st.spinner(f"Analysing with {analyzer}..."):
             fields = extract_bytes(upload.getvalue(), analyzer, upload.type)
 

@@ -1,4 +1,5 @@
 """Module 9 · Review insights: what travellers say about Fjord Trips."""
+
 import pandas as pd
 import streamlit as st
 from language import load_reviews, analyse, summarise

@@ -10,7 +10,7 @@ st.set_page_config(page_title="Fjord Trips · Voice", page_icon="🎙️")
 st.title("Ask with your voice")
 st.info("You're talking to an AI assistant. A travel advisor confirms all bookings.")
 
-LANGUAGES = {"English": "en-US", "हिन्दी (Hindi)": "hi-IN"}
+LANGUAGES = {"English": "en-US", "Norsk (Norwegian)": "nb-NO"}
 language = LANGUAGES[st.radio("Language", list(LANGUAGES), horizontal=True)]
 
 recording = st.audio_input("Record your question")
@@ -24,7 +24,7 @@ if recording:
     if question:
         if "conv" not in st.session_state:
             st.session_state.conv = new_conversation()
-        prompt = question if language == "en-US" else question + "\n(Answer in Hindi.)"
+        prompt = question if language == "en-US" else question + "\n(Answer in Norwegian.)"
         with st.spinner("Thinking..."):
             answer = ask_agent(st.session_state.conv, prompt)
         st.write(f"**Assistant:** {answer}")

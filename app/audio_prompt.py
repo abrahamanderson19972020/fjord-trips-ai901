@@ -8,9 +8,12 @@ from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
 
+
 load_dotenv()
-project = AIProjectClient(endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+
+project = AIProjectClient(endpoint=os.environ["AUDIO_PROJECT_ENDPOINT"],
                           credential=DefaultAzureCredential())
+
 client = project.get_openai_client()
 
 with open("data/media/question.wav", "rb") as f:
@@ -18,7 +21,8 @@ with open("data/media/question.wav", "rb") as f:
 
 reply = client.chat.completions.create(
     model=os.environ["AUDIO_DEPLOYMENT"],
-    modalities=["text"],
+    modalities=["text", "audio"],
+    audio={"voice": "alloy", "format": "wav"},
     messages=[
         {"role": "system", "content": "You are the Fjord Trips assistant. Answer briefly."},
         {"role": "user", "content": [
@@ -27,4 +31,10 @@ reply = client.chat.completions.create(
         ]},
     ],
 )
-print(reply.choices[0].message.content)
+
+answer = reply.choices[0].message.audio
+with open("data/media/answer.wav", "wb") as f:
+    f.write(base64.b64decode(answer.data))
+
+print("Assistant said:", answer.transcript)
+print("Saved: data/media/answer.wav")
