@@ -1,11 +1,13 @@
 """Module 9 · Review insights: what travellers say about Fjord Trips."""
+
 import pandas as pd
 import streamlit as st
+import ui
 from language import load_reviews, analyse, summarise
 
 st.set_page_config(page_title="Fjord Trips · Review insights", page_icon="📊")
-st.title("Review insights")
-st.caption("Staff page · 50 traveller reviews analysed with Azure Language")
+ui.style()
+ui.hero("Staff page", "Review insights", "50 traveller reviews analysed with Azure Language")
 
 
 @st.cache_data(show_spinner="Analysing reviews with Azure Language...")
@@ -17,15 +19,17 @@ def run():
 
 count, sentiments, phrases, places, summary = run()
 
+ICONS = {"positive": "😊", "neutral": "😐", "negative": "😞", "mixed": "🤔"}
 cols = st.columns(4)
 for col, label in zip(cols, ["positive", "neutral", "negative", "mixed"]):
-    col.metric(label.capitalize(), sentiments.get(label, 0))
+    col.metric(f"{ICONS[label]} {label.capitalize()}", sentiments.get(label, 0))
 
-st.subheader("Top topics")
-st.bar_chart(pd.DataFrame(phrases, columns=["topic", "mentions"]).set_index("topic"))
+ui.section("Top topics")
+st.bar_chart(pd.DataFrame(phrases, columns=["topic", "mentions"]).set_index("topic"), color="#138a83")
 
-st.subheader("Most mentioned places")
-st.write(", ".join(f"{name} ({n})" for name, n in places))
+ui.section("Most mentioned places")
+ui.chips([f"📍 {name} ({n})" for name, n in places])
 
-st.subheader("Summary for the team")
-st.write(summary)
+ui.section("Summary for the team")
+ui.panel(summary)
+ui.sidebar_note()

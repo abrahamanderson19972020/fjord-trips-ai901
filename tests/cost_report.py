@@ -13,7 +13,7 @@ from agent_client import client  # noqa: E402
 # USD per 1 million tokens: (input, output). Example values: replace with today's prices.
 PRICES = {
     os.environ.get("CHAT_DEPLOYMENT", "gpt-5-mini"): (0.25, 2.00),
-    os.environ.get("CHEAP_DEPLOYMENT", "gpt-5-nano"): (0.05, 0.40),
+    os.environ.get("CHEAP_DEPLOYMENT", "gpt-5.4-nano"): (0.20, 1.25),
 }
 BROCHURE = open("data/brochure.txt", encoding="utf-8").read()
 INSTRUCTIONS = open("prompts/trip_planner.txt", encoding="utf-8").read() + \
